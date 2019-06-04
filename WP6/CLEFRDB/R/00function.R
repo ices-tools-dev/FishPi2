@@ -6,10 +6,10 @@
 #' @return the updated object2
 importSlots<-function(object1,object2){
 	if(F){
-	library(CLEFRDB)
-	object1<-methods::new("Time")
-	object2<-methods::new("Time")
-	importSlots(object1,object2)
+	#library(CLEFRDB)
+	#object1<-methods::new("Time")
+	#object2<-methods::new("Time")
+	#importSlots(object1,object2)
 	}
 	class1<-class(object1)
 	if(!inherits(object2,class1)){
@@ -31,9 +31,9 @@ importSlots<-function(object1,object2){
 #' @return the length of the slots
 lengthSlots<-function(object){
 	if(F){
-	library(CLEFRDB)
-	object<-new("Time")
-	lengthSlots(object)
+	#library(CLEFRDB)
+	#object<-new("Time")
+	#lengthSlots(object)
 	}
 
 	nomslot<-methods::slotNames(object)

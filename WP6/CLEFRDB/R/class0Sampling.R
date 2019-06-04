@@ -21,27 +21,27 @@ validSampling<-function(object){
 			check<-FALSE&check
 		}
 		#SamplingType
-		if(all(object@SamplingType%in%Samplingtype)){
+		if(all(object@SamplingType%in%CLEFRDB::Samplingtype)){
 			check<-TRUE&check
 		}else{
-			id<-which(!object@SamplingType%in%Samplingtype)
+			id<-which(!object@SamplingType%in%CLEFRDB::Samplingtype)
 			print(paste0("wrong SamplingType at: ",paste0(id,collapse=",")))
 			check<-FALSE&check
 		}
 		#SamplingMethod
-		if(all(object@SamplingMethod%in%Samplingmethodtype)){
+		if(all(object@SamplingMethod%in%CLEFRDB::Samplingmethodtype)){
 			check<-TRUE&check
 		}else{
-			id<-which(!object@SamplingMethod%in%Samplingmethodtype)
+			id<-which(!object@SamplingMethod%in%CLEFRDB::Samplingmethodtype)
 			print(paste0("wrong SamplingMethod at: ",paste0(id,collapse=",")))
 			check<-FALSE&check
 		}
 		#SamplingProject:not needed
 		#SamplingCountry
-		if(all(object@SamplingCountry%in%defcountry$id)){
+		if(all(object@SamplingCountry%in%CLEFRDB::defcountry$id)){
 			check<-TRUE&check
 		}else{
-			id<-which(!object@SamplingCountry%in%defcountry$id)
+			id<-which(!object@SamplingCountry%in%CLEFRDB::defcountry$id)
 			print(paste0("wrong SamplingCountry at: ",paste0(id,collapse=",")))
 			check<-FALSE&check
 		}
@@ -61,12 +61,12 @@ setClass(Class="Sampling",
 			    SamplingProject=character(),SamplingCountry=character()),
 	validity=validSampling
 	)
-if(F){
-	library()
-load("../data/Samplingtype.rda")
-load("../data/Samplingmethodtype.rda")
-load("../data/defcountry.rda")
-new("Sampling")
-new("Sampling",SamplingCountry="FRA",SamplingType="M")
-new("Sampling",SamplingCountry="FRA",SamplingType="U")
-}
+#if(F){
+#	library()
+#load("../data/Samplingtype.rda")
+#load("../data/Samplingmethodtype.rda")
+#load("../data/defcountry.rda")
+#new("Sampling")
+#new("Sampling",SamplingCountry="FRA",SamplingType="M")
+#new("Sampling",SamplingCountry="FRA",SamplingType="U")
+#}

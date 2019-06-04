@@ -22,10 +22,10 @@ validVessel<-function(object){
 		}
 		#VesselId: not needed
 		#VesselFlag
-		if(all(object@VesselFlag%in%defcountry$id)){
+		if(all(object@VesselFlag%in%CLEFRDB::defcountry$id)){
 			check<-TRUE&check
 		}else{
-			VesselId<-which(!object@VesselFlag%in%defcountry$id)
+			VesselId<-which(!object@VesselFlag%in%CLEFRDB::defcountry$id)
 			print(paste0("wrong country at: ",paste0(VesselId,collapse=",")))
 			check<-FALSE&check
 		}
@@ -81,8 +81,8 @@ setClass(Class="Vessel",
 			    VesselSize=integer()),
 	validity=validVessel
 	)
-if(F){
-library(CLEFRDB)
-new("Vessel")
-new("Vessel",VesselId="pipo",VesselFlag="FRA",VesselLength=as.integer(10),VesselPower=as.integer(10))
-}
+#if(F){
+#library(CLEFRDB)
+#new("Vessel")
+#new("Vessel",VesselId="pipo",VesselFlag="FRA",VesselLength=as.integer(10),VesselPower=as.integer(10))
+#}

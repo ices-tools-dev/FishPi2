@@ -1,6 +1,3 @@
-
-
-
 #' initinherit
 #'
 #' a generic function to initialize object
@@ -29,7 +26,7 @@ initinherit<-function(Object,...){
 			}
 		}
 		#slot to slot
-		if(any(slotNames(Object)%in%namedots)){
+		if(any(methods::slotNames(Object)%in%namedots)){
 			#print("slot")
  			testusedots[[namedots]]<-TRUE
 			methods::slot(Object,namedots)<-dots[[namedots]]
@@ -46,10 +43,10 @@ initinherit<-function(Object,...){
 		warning(paste0("parameters ",paste0(wrongdots,collapse=",")," unknown not used"))
 	}
 	#test slot size
-	newslots<-slotNames(Object)
+	newslots<-methods::slotNames(Object)
 	lenslots<-c()
 	for(i in newslots){
-		lenslots<-c(lenslots,length(slot(Object,i)))
+		lenslots<-c(lenslots,length(methods::slot(Object,i)))
   	}
 	if(length(unique(lenslots))!=1){
 		print("slots have differents length:")
@@ -84,23 +81,31 @@ setMethod("plot","Time",
 #' @return the update object
 #'
 #' @export
+#' @rdname dimension
 dimclass<-function(Object){
 	if(F){
-		haultime->Object
+#		haultime->Object
 	}
   #Object <- callNextMethod()
-	nomslots<-slotNames(Object)
+	nomslots<-methods::slotNames(Object)
 	#slot(Object,"TimeType")#nomslots[1])
 	nbcol<-length(nomslots)
-	nbrow<-length(slot(Object,nomslots[1]))
+	nbrow<-length(methods::slot(Object,nomslots[1]))
 	c(nbrow,nbcol)
 	#setMethod("dim","Time",function(x,...)
 }
 #' generic dim by class
+#' @param x an Object
+#' @export
 setMethod("dim","Time", function(x) dimclass(x))
 #' generic dim by class
-setMethod("dim","Space", function(x) dimclass2(x))
-setMethod("dim","Vessel", function(x) dimclass2(x))
+#' @param x an Object
+#' @export
+setMethod("dim","Space", function(x) dimclass(x))
+#' generic dim by class
+#' @param x an Object
+#' @export
+setMethod("dim","Vessel", function(x) dimclass(x))
 
 #' dimension of slots
 #'
@@ -112,26 +117,26 @@ setMethod("dim","Vessel", function(x) dimclass2(x))
 #' @export
 dimslots<-function(Object){
 	if(F){
-		haultime->Object
+#		haultime->Object
 	}
   #Object <- callNextMethod()
-	nomslots<-slotNames(Object)
+	nomslots<-methods::slotNames(Object)
 	lengthslots<-rep(NA,length(nomslots))
 	#slot(Object,"TimeType")#nomslots[1])
 	for(i in seq_along(nomslots)){
-		    lengthslots[i]<-length(slot(Object,nomslots[i]))
+		    lengthslots[i]<-length(methods::slot(Object,nomslots[i]))
 	}
 	return(lengthslots)
 	nbcol<-length(nomslots)
-	nbrow<-length(slot(Object,nomslots[1]))
+	nbrow<-length(methods::slot(Object,nomslots[1]))
 	c(nbrow,nbcol)
 	#setMethod("dim","Time",function(x,...)
 }
 #' generic dim by class
 setMethod("dim","Time", function(x) dimclass(x))
 #' generic dim by class
-setMethod("dim","Space", function(x) dimclass2(x))
-setMethod("dim","Vessel", function(x) dimclass2(x))
+setMethod("dim","Space", function(x) dimclass(x))
+setMethod("dim","Vessel", function(x) dimclass(x))
 
 #' coerce to data frame 
 #'
@@ -143,27 +148,27 @@ setMethod("dim","Vessel", function(x) dimclass2(x))
 #' @export
 as.df<-function(Object){
 	if(F){
-		haultime->Object
-		lapply(Object,names)
-	lapply(Object,slot)#,nomslots)
-	nomslots<-slotNames(Object)
-	lapply(Object,dim)
-	lapply(Object, FUN=slot(Object,name=nomslots))
-	slot(Object,nomslots[1])
-	fct1<-function(a,b){slot(a,b)}
-	slot(haultime,"TimeType")
-	fct1(haultime,"TimeType")
-	sapply(haultime,fct1,b="TimeType")
-
+#		haultime->Object
+#		lapply(Object,names)
+#	lapply(Object,slot)#,nomslots)
+#	nomslots<-slotNames(Object)
+#	lapply(Object,dim)
+#	lapply(Object, FUN=slot(Object,name=nomslots))
+#	slot(Object,nomslots[1])
+#	fct1<-function(a,b){slot(a,b)}
+#	slot(haultime,"TimeType")
+#	fct1(haultime,"TimeType")
+#	sapply(haultime,fct1,b="TimeType")
+#
 	}
   #Object <- callNextMethod()
 	dimobj<-dim(Object)
-	nomslots<-slotNames(Object)
+	nomslots<-methods::slotNames(Object)
 	df<-data.frame(matrix(nrow=dimobj[1],ncol=dimobj[2]))
 	names(df)<-nomslots
 	#slot(Object,"TimeType")#nomslots[1])
 	for(i in seq_along(nomslots)){
-		df[,i]<-slot(Object,nomslots[i])
+		df[,i]<-methods::slot(Object,nomslots[i])
 		#df[i,]
 		#names(dftmp)<-nomslots[i]
 		#df<-cbind(df,dftmp)
@@ -173,53 +178,53 @@ as.df<-function(Object){
 
 
 
-if(F){
-new("Vessel")%>%dim
-new("Space")%>%as.df
-		  #nomslot<-methods::slotNames(object)
-		  #plot(x=x@TimeDate,y=rep(0,length(x@TimeDate)),xlab="TimeDate",ylab="",...)#,y=x@TimeType)
-
-
-
-	library("CLEFRDB")
-	library(dplyr)
-	new("Time")
-	new("Time")%>%dim
-	new("Space")%>%dimclass
-	new("Space")%>%dim
-
-	library("CLEFRDB")
-	haultime<-c("2011-03-27 01:30:03",
-		                "2011-03-27 12:00:00",
-				            "2011-03-15 12:00:00",
-				            "2011-02-14 00:00:00")
-	haultime<-as.POSIXct(strptime(haultime,
-				                                 "%Y-%m-%d %H:%M:%S"))
-	haultime<-new("Time",TimeType=c("date","day","month","quarter"),
-		          TimeDate=haultime)
-	print(haultime)
-	dimclass(haultime)
-	dim(haultime)
-	as.df(haultime)
-
-setClass(Class="Landings",
-	 slots=c("w"="numeric"),
-	 contains=c("Time"),
-	 prototype=prototype(w=numeric(),
-			     Time=new("Time"))
-	 )
-
-new("Landings")
-new("Landings",w=rnorm(4),TimeDate=haultime@TimeDate,TimeType=haultime@TimeType)
-
-setMethod("initialize","Landings",function(.Object){.Object<-initinherit(.Object);return(.Object)})
-new("Landings")
-new("Landings",w=rnorm(4),Time=haultime)
-
-initinherit(new(""),w=1:4,Time=haultime,pipo=10)
-aa<-initinherit(new("Landings"),w=c(10,20,50,60,0),Time=haultime)
-new("Landings",Landings=rnorm(4))#,Time=haultime)
-new("Trip",Time=haultime)
-
-
-}
+#if(F){
+#new("Vessel")%>%dim
+#new("Space")%>%as.df
+#		  #nomslot<-methods::slotNames(object)
+#		  #plot(x=x@TimeDate,y=rep(0,length(x@TimeDate)),xlab="TimeDate",ylab="",...)#,y=x@TimeType)
+#
+#
+#
+#	library("CLEFRDB")
+#	library(dplyr)
+#	new("Time")
+#	new("Time")%>%dim
+#	new("Space")%>%dimclass
+#	new("Space")%>%dim
+#
+#	library("CLEFRDB")
+#	haultime<-c("2011-03-27 01:30:03",
+#		                "2011-03-27 12:00:00",
+#				            "2011-03-15 12:00:00",
+#				            "2011-02-14 00:00:00")
+#	haultime<-as.POSIXct(strptime(haultime,
+#				                                 "%Y-%m-%d %H:%M:%S"))
+#	haultime<-new("Time",TimeType=c("date","day","month","quarter"),
+#		          TimeDate=haultime)
+#	print(haultime)
+#	dimclass(haultime)
+#	dim(haultime)
+#	as.df(haultime)
+#
+#setClass(Class="Landings",
+#	 slots=c("w"="numeric"),
+#	 contains=c("Time"),
+#	 prototype=prototype(w=numeric(),
+#			     Time=new("Time"))
+#	 )
+#
+#new("Landings")
+#new("Landings",w=rnorm(4),TimeDate=haultime@TimeDate,TimeType=haultime@TimeType)
+#
+#setMethod("initialize","Landings",function(.Object){.Object<-initinherit(.Object);return(.Object)})
+#new("Landings")
+#new("Landings",w=rnorm(4),Time=haultime)
+#
+#initinherit(new(""),w=1:4,Time=haultime,pipo=10)
+#aa<-initinherit(new("Landings"),w=c(10,20,50,60,0),Time=haultime)
+#new("Landings",Landings=rnorm(4))#,Time=haultime)
+#new("Trip",Time=haultime)
+#
+#
+#}

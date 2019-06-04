@@ -8,8 +8,8 @@ validTrip<-function(object){
 	#print(Triptype)
 		check<-TRUE
 		#data length
-if(F){
-object<-new("Trip")
+#if(F){
+#object<-new("Trip")
 		nomslot<-methods::slotNames(object)
 		lengthall<-c()
 		for(i in nomslot){
@@ -23,31 +23,31 @@ object<-new("Trip")
 			check<-FALSE&check
 		}
 		#type
-		if(all(object@type%in%Triptype)){
+		if(all(object@type%in%CLEFRDB::Triptype)){
 			check<-TRUE&check
 		}else{
-			id<-which(!object@type%in%Triptype)
+			id<-which(!object@type%in%CLEFRDB::Triptype)
 			print(paste0("wrong type at: ",paste0(id,collapse=",")))
 			check<-FALSE&check
 		}
 		#method
-		if(all(object@method%in%Tripmethodtype)){
+		if(all(object@method%in%CLEFRDB::Tripmethodtype)){
 			check<-TRUE&check
 		}else{
-			id<-which(!object@method%in%Tripmethodtype)
+			id<-which(!object@method%in%CLEFRDB::Tripmethodtype)
 			print(paste0("wrong method at: ",paste0(id,collapse=",")))
 			check<-FALSE&check
 		}
 		#project:not needed
 		#country
-		if(all(object@country%in%defcountry$id)){
+		if(all(object@country%in%CLEFRDB::defcountry$id)){
 			check<-TRUE&check
 		}else{
-			id<-which(!object@country%in%defcountry$id)
+			id<-which(!object@country%in%CLEFRDB::defcountry$id)
 			print(paste0("wrong country at: ",paste0(id,collapse=",")))
 			check<-FALSE&check
 		}
-}
+#}
 		return(check)
 
 }
@@ -71,18 +71,18 @@ setClass(Class="Trip",
 		),
 	 prototype=prototype(nbhaul=integer(),
 			     daysatsea=integer(),
-			     Vessel=new("Vessel"),
-			     Sampling=new("Sampling"),
-			     Time=new("Time"),
-			     Space=new("Space")
+			     Vessel=methods::new("Vessel"),
+			     Sampling=methods::new("Sampling"),
+			     Time=methods::new("Time"),
+			     Space=methods::new("Space")
 			     ),
 	validity=validTrip
 )
 
 setMethod("initialize","Trip",function(.Object,...){
 if(F){
-	dots<-list(Space=new("Space",SpaceType="ICESdiv",SpacePlace="27.7.g"),Time=new("Time",TimeDate=Sys.time(),TimeType="date"))
- 	.Object<-new("Trip")
+#	dots<-list(Space=new("Space",SpaceType="ICESdiv",SpacePlace="27.7.g"),Time=new("Time",TimeDate=Sys.time(),TimeType="date"))
+# 	.Object<-methods::new("Trip")
 }
   dots<-list(...)
   if(length(dots)>0){
@@ -102,7 +102,7 @@ if(F){
 			}
 		}
 		#slot to slot
-		if(any(slotNames(.Object)%in%namedots)){
+		if(any(methods::slotNames(.Object)%in%namedots)){
 			#print("slot")
  			testusedots[[namedots]]<-TRUE
 			methods::slot(.Object,namedots)<-dots[[namedots]]
@@ -123,61 +123,61 @@ if(F){
 })
 
 
-if(F){
-
-	library(CLEFRDB)
-	source("00function.R")
-	aa<-new("Trip")
-	aa<-new("Trip",VesselId="date")
-	aa<-new("Trip",VesselId="geooorges",robert="jjj")
-	aa<-new("Trip",robert="jjj")
-	pipo<-new("Trip")
-	tt<-new("Vessel",id=10)
-	new("Trip",vessel=tt)
-	pipo
-
-	load("../data/Triptype.rda")
-	load("../data/Tripmethodtype.rda")
-	load("../data/defcountry.rda")
-	pipo<-new("Time",TimeType="youlgi")
-	pipo@TimeType<-"oupu"
-	new("Trip",Time=pipo)
-	new("Trip",country="FRA",type="M")
-	new("Trip",country="FRA",type="U")
-setClass(Class="pipo",
-	slots=c(nbhaul="integer",
-		daysatsea="integer"
-		),
-	contains=c("Vessel",
-		"Space","Time"
-		),
-	#validity=validTrip
-	)
-
-setMethod("initialize", "pipo",
-    function(.Object,
-	     vessel=new("Vessel"),
-	     space=new("Space"),
-	     time=new("Time"),
-	     nbhaul=integer(),
-	     daysatsea=integer(),
-	     ...){
-	    .Object <- methods::callNextMethod()
-	    .Object<-importSlots(vessel,.Object)
-	    .Object<-importSlots(space,.Object)
-	    .Object<-importSlots(time,.Object)
-	    .Object@nbhaul<-nbhaul
-	    .Object@daysatsea<-daysatsea
-	    #methods::validObject(.Object)
-	    return(.Object)
-    }
-   ) 
-
-load("../data/Timetype.rda")
-source("00function.R")
-source("class0Time.R")
-source("class0Vessel.R")
-source("class0Space.R")
-new("pipo")
-
-}
+#if(F){
+#
+#	library(CLEFRDB)
+#	source("00function.R")
+#	aa<-new("Trip")
+#	aa<-new("Trip",VesselId="date")
+#	aa<-new("Trip",VesselId="geooorges",robert="jjj")
+#	aa<-new("Trip",robert="jjj")
+#	pipo<-new("Trip")
+#	tt<-new("Vessel",id=10)
+#	new("Trip",vessel=tt)
+#	pipo
+#
+#	load("../data/Triptype.rda")
+#	load("../data/Tripmethodtype.rda")
+#	load("../data/defcountry.rda")
+#	pipo<-new("Time",TimeType="youlgi")
+#	pipo@TimeType<-"oupu"
+#	new("Trip",Time=pipo)
+#	new("Trip",country="FRA",type="M")
+#	new("Trip",country="FRA",type="U")
+#setClass(Class="pipo",
+#	slots=c(nbhaul="integer",
+#		daysatsea="integer"
+#		),
+#	contains=c("Vessel",
+#		"Space","Time"
+#		),
+#	#validity=validTrip
+#	)
+#
+#setMethod("initialize", "pipo",
+#    function(.Object,
+#	     vessel=new("Vessel"),
+#	     space=new("Space"),
+#	     time=new("Time"),
+#	     nbhaul=integer(),
+#	     daysatsea=integer(),
+#	     ...){
+#	    .Object <- methods::callNextMethod()
+#	    .Object<-importSlots(vessel,.Object)
+#	    .Object<-importSlots(space,.Object)
+#	    .Object<-importSlots(time,.Object)
+#	    .Object@nbhaul<-nbhaul
+#	    .Object@daysatsea<-daysatsea
+#	    #methods::validObject(.Object)
+#	    return(.Object)
+#    }
+#   ) 
+#
+#load("../data/Timetype.rda")
+#source("00function.R")
+#source("class0Time.R")
+#source("class0Vessel.R")
+#source("class0Space.R")
+#new("pipo")
+#
+#}

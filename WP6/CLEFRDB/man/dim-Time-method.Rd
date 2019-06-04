@@ -9,6 +9,9 @@
 
 \S4method{dim}{Time}(x)
 }
+\arguments{
+\item{x}{an Object}
+}
 \description{
 generic dim by class
 
